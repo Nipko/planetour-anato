@@ -16,6 +16,8 @@ COPY public/ ./public/
 RUN mkdir -p ./public/img
 COPY logo_planetour.png ./public/img/logo_planetour.png
 COPY logo_anato.png ./public/img/logo_anato.png
+COPY Logo_gecko.png ./public/img/Logo_gecko.png
+COPY Logo_hotel.png ./public/img/Logo_hotel.png
 
 EXPOSE 3000
 
