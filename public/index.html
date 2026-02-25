@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario Vitrina Turística ANATO 2026 – Planetour</title>
+  <meta name="description" content="Registro para la Vitrina Turística ANATO 2026 – Colombia abierta al mundo. Bogotá D.C., 25 al 27 de febrero de 2026." />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header__inner">
+    <img src="/img/logo_planetour.png" alt="Planetour" class="header__logo" />
+    <div class="header__event">
+      <div class="header__event-title">'Colombia abierta al mundo'</div>
+      <div class="header__event-sub">25 al 27 de febrero de 2026 – Bogotá D.C.</div>
+    </div>
+    <img src="/img/logo_anato.png" alt="Vitrina Turística ANATO" class="header__logo" />
+  </div>
+</header>
+
+<!-- ── Main Form ──────────────────────────────────────────────────── -->
+<main class="main">
+  <div class="card">
+    <h1 class="card__title">Registro Vitrina Turística ANATO 2026</h1>
+    <p class="card__subtitle">Complete el formulario para registrarse en nuestros servicios y paquetes turísticos.</p>
+
+    <form id="formAnato" novalidate>
+      <!-- Nombre y Apellido -->
+      <div class="form-group">
+        <label for="nombre">Nombre y Apellido <span class="required">*</span></label>
+        <input type="text" id="nombre" class="form-input" maxlength="256" placeholder="Ej: Juan Pérez" required />
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Nombre de Agencia -->
+      <div class="form-group">
+        <label for="agencia">Nombre de Agencia <span class="required">*</span></label>
+        <input type="text" id="agencia" class="form-input" maxlength="200" placeholder="Ej: Viajes Colombia" required />
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Cargo -->
+      <div class="form-group">
+        <label for="cargo">Cargo <span class="required">*</span></label>
+        <input type="text" id="cargo" class="form-input" maxlength="256" placeholder="Ej: Gerente Comercial" required />
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Ciudad -->
+      <div class="form-group">
+        <label for="ciudad">Ciudad <span class="required">*</span></label>
+        <input type="text" id="ciudad" class="form-input" maxlength="100" placeholder="Ej: Bogotá" required />
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="form-group">
+        <label for="correo">Correo Electrónico <span class="required">*</span></label>
+        <input type="email" id="correo" class="form-input" placeholder="correo@ejemplo.com" required />
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label for="telefonoNum">Teléfono <span class="required">*</span></label>
+        <div class="phone-row">
+          <select id="codigoPais" class="form-select">
+            <option value="+57">🇨🇴 +57</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+52">🇲🇽 +52</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+56">🇨🇱 +56</option>
+            <option value="+51">🇵🇪 +51</option>
+            <option value="+54">🇦🇷 +54</option>
+            <option value="+593">🇪🇨 +593</option>
+            <option value="+58">🇻🇪 +58</option>
+            <option value="+507">🇵🇦 +507</option>
+            <option value="+506">🇨🇷 +506</option>
+          </select>
+          <input type="tel" id="telefonoNum" class="form-input" placeholder="3001234567" required />
+        </div>
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Interés -->
+      <div class="form-group" id="interesGroup">
+        <label>Interés <span class="required">*</span></label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Consolidación Aérea" /> Consolidación Aérea
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Gecko Aventura Extrema" /> Gecko Aventura Extrema
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Hotel Waldorf" /> Hotel Waldorf
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Paquetes Amazonas" /> Paquetes Amazonas
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Paquetes San Andrés" /> Paquetes San Andrés
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="interes" value="Paquetes Yopal" /> Paquetes Yopal
+          </label>
+        </div>
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Observación -->
+      <div class="form-group">
+        <label for="observacion">Observación</label>
+        <textarea id="observacion" class="form-textarea" maxlength="500" placeholder="Escriba sus observaciones aquí..."></textarea>
+        <div class="char-counter" id="obsCounter">0/500</div>
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Política de datos -->
+      <div class="form-group">
+        <label class="policy-check" id="acepta_politica_wrapper">
+          <input type="checkbox" id="acepta_politica" />
+          <span>
+            He leído y acepto la
+            <a href="/politica-datos.html" target="_blank">Política de Tratamiento de Datos</a>
+            y los
+            <a href="/terminos.html" target="_blank">Términos y Condiciones</a>.
+          </span>
+        </label>
+        <span class="form-error"></span>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="btnSubmit" class="btn-submit">
+        <span class="spinner"></span>
+        <span class="btn-label">💾 Guardar Registro</span>
+      </button>
+    </form>
+  </div>
+</main>
+
+<!-- ── Toast ────────────────────────────────────────────────────────── -->
+<div id="toast" class="toast"></div>
+
+<!-- ── Footer ──────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__logos">
+      <img src="/img/logo_planetour.png" alt="Planetour" />
+      <!-- Gecko and Hotel Waldorf logos as text badges since images aren't provided -->
+      <span style="color:var(--clr-primary);font-weight:700;font-size:1.1rem;">Gecko Aventura Extrema</span>
+      <span style="color:var(--clr-primary);font-weight:700;font-size:1.1rem;">Hotel Waldorf</span>
+    </div>
+    <div class="footer__links">
+      <a href="https://linktr.ee/planetour" target="_blank" rel="noopener">🔗 linktr.ee/planetour</a>
+      <a href="/politica-datos.html">Política de Datos</a>
+      <a href="/terminos.html">Términos y Condiciones</a>
+    </div>
+    <div class="footer__copy">
+      &copy; 2026 Planetour S.A.S. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
