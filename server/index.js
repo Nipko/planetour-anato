@@ -90,6 +90,31 @@ app.post('/api/formulario', async (req, res) => {
     }
 });
 
+// --- Admin ------------------------------------------------------------------
+const ADMIN_KEY = process.env.ADMIN_KEY || 'Pl4n3t0ur_Admin_2026!';
+
+app.post('/api/admin/login', (req, res) => {
+    const { key } = req.body;
+    if (key === ADMIN_KEY) {
+        return res.json({ ok: true });
+    }
+    return res.status(401).json({ ok: false, message: 'Clave incorrecta.' });
+});
+
+app.get('/api/admin/registros', (req, res) => {
+    const key = req.headers['x-admin-key'];
+    if (key !== ADMIN_KEY) {
+        return res.status(401).json({ ok: false, message: 'No autorizado.' });
+    }
+
+    pool.query('SELECT * FROM formulario ORDER BY created_at DESC')
+        .then(result => res.json({ ok: true, data: result.rows, total: result.rowCount }))
+        .catch(err => {
+            console.error('Admin query error:', err);
+            res.status(500).json({ ok: false, message: 'Error interno.' });
+        });
+});
+
 // SPA fallback
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

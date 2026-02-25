@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Admin – Registros ANATO 2026</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+        .admin-login {
+            max-width: 420px;
+            margin: 3rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .admin-login .card {
+            text-align: center;
+        }
+
+        .admin-login .form-input {
+            margin-top: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .admin-login .btn-submit {
+            margin-top: 1.2rem;
+        }
+
+        .admin-panel {
+            display: none;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .admin-panel.show {
+            display: block;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--clr-primary), #ffb347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .label {
+            font-size: 0.82rem;
+            color: var(--clr-text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            background: var(--clr-surface-solid);
+            border: 1.5px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            color: var(--clr-text);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .toolbar input:focus {
+            border-color: var(--clr-primary);
+        }
+
+        .btn-export {
+            padding: 0.6rem 1.2rem;
+            background: var(--clr-navy-light);
+            color: var(--clr-primary);
+            border: 1.5px solid var(--clr-primary);
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .btn-export:hover {
+            background: rgba(242, 140, 40, 0.12);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--clr-border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: var(--clr-navy-light);
+            color: var(--clr-primary);
+            padding: 0.75rem 0.8rem;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.65rem 0.8rem;
+            border-top: 1px solid var(--clr-border);
+            color: var(--clr-text);
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: rgba(242, 140, 40, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(242, 140, 40, 0.15);
+            color: var(--clr-primary);
+            margin: 1px 2px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--clr-text-muted);
+        }
+
+        .empty-state span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--clr-text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            transition: color var(--transition);
+        }
+
+        .logout-btn:hover {
+            color: var(--clr-error);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__inner">
+            <a href="/"><img src="/img/logo_planetour.png" alt="Planetour" class="header__logo" /></a>
+            <div class="header__event">
+                <div class="header__event-title">Panel de Administración</div>
+                <div class="header__event-sub">Registros Vitrina Turística ANATO 2026</div>
+            </div>
+            <button class="logout-btn" id="logoutBtn" style="display:none;" onclick="logout()">🚪 Cerrar sesión</button>
+        </div>
+    </header>
+
+    <!-- Login -->
+    <div class="admin-login" id="loginSection">
+        <div class="card">
+            <h1 class="card__title">🔐 Acceso Admin</h1>
+            <p class="card__subtitle">Ingrese la clave de administración</p>
+            <input type="password" id="adminKey" class="form-input" placeholder="Clave de acceso" />
+            <div class="form-error" id="loginError" style="display:none; margin-top:0.5rem;"></div>
+            <button class="btn-submit" onclick="login()">
+                <span class="btn-label">Ingresar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="num" id="totalCount">0</div>
+                <div class="label">Total Registros</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="todayCount">0</div>
+                <div class="label">Hoy</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="agencyCount">0</div>
+                <div class="label">Agencias Únicas</div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre, agencia, correo..."
+                oninput="filterTable()" />
+            <button class="btn-export" onclick="exportCSV()">📥 Exportar CSV</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Agencia</th>
+                        <th>Cargo</th>
+                        <th>Ciudad</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Intereses</th>
+                        <th>Observación</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <span>📋</span> No hay registros aún.
+        </div>
+    </div>
+
+    <script>
+        let adminKey = '';
+        let allData = [];
+
+        async function login() {
+            const key = document.getElementById('adminKey').value;
+            const errEl = document.getElementById('loginError');
+            if (!key) { errEl.textContent = 'Ingrese la clave.'; errEl.style.display = 'block'; return; }
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+                const json = await res.json();
+
+                if (res.ok && json.ok) {
+                    adminKey = key;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminPanel').classList.add('show');
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    loadData();
+                } else {
+                    errEl.textContent = json.message || 'Clave incorrecta.';
+                    errEl.style.display = 'block';
+                }
+            } catch (e) {
+                errEl.textContent = 'Error de conexión.';
+                errEl.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            adminKey = '';
+            allData = [];
+            document.getElementById('loginSection').style.display = '';
+            document.getElementById('adminPanel').classList.remove('show');
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('adminKey').value = '';
+        }
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/admin/registros', {
+                    headers: { 'X-Admin-Key': adminKey }
+                });
+                const json = await res.json();
+
+                if (json.ok) {
+                    allData = json.data;
+                    document.getElementById('totalCount').textContent = json.total;
+
+                    const today = new Date().toISOString().slice(0, 10);
+                    const todayRows = allData.filter(r => r.created_at && r.created_at.slice(0, 10) === today);
+                    document.getElementById('todayCount').textContent = todayRows.length;
+
+                    const agencies = new Set(allData.map(r => r.agencia.toLowerCase()));
+                    document.getElementById('agencyCount').textContent = agencies.size;
+
+                    renderTable(allData);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const empty = document.getElementById('emptyState');
+
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            tbody.innerHTML = data.map((r, i) => {
+                const fecha = r.created_at ? new Date(r.created_at).toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                const intereses = (r.interes || []).map(x => `<span class="badge">${x}</span>`).join('');
+                return `<tr>
+      <td>${i + 1}</td><td>${fecha}</td><td title="${r.nombre}">${r.nombre}</td>
+      <td title="${r.agencia}">${r.agencia}</td><td title="${r.cargo}">${r.cargo}</td>
+      <td>${r.ciudad}</td><td>${r.correo}</td><td>${r.telefono}</td>
+      <td>${intereses}</td><td title="${r.observacion || ''}">${r.observacion || '-'}</td>
+    </tr>`;
+            }).join('');
+        }
+
+        function filterTable() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            if (!q) { renderTable(allData); return; }
+            const filtered = allData.filter(r =>
+                (r.nombre + r.agencia + r.correo + r.ciudad + r.cargo).toLowerCase().includes(q)
+            );
+            renderTable(filtered);
+        }
+
+        function exportCSV() {
+            if (allData.length === 0) return;
+            const headers = ['Fecha', 'Nombre', 'Agencia', 'Cargo', 'Ciudad', 'Correo', 'Teléfono', 'Intereses', 'Observación'];
+            const rows = allData.map(r => [
+                r.created_at ? new Date(r.created_at).toLocaleString('es-CO') : '',
+                r.nombre, r.agencia, r.cargo, r.ciudad, r.correo, r.telefono,
+                (r.interes || []).join('; '), r.observacion || ''
+            ]);
+            const csv = [headers, ...rows].map(row => row.map(c => `"${(c + '').replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `registros_anato_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click();
+        }
+
+        // Allow Enter to login
+        document.getElementById('adminKey').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+    </script>
+
+</body>
+
+</html>
